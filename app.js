@@ -1,10 +1,9 @@
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
-var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const mongoose = require("mongoose");
-const passport = require('passport');
+const passport = require("passport");
 const config = require("./config");
 
 var indexRouter = require("./routes/index");
@@ -14,9 +13,7 @@ const shoppingRouter = require("./routes/shopping");
 
 var app = express();
 
-const url = config.mongoUrl;
-
-const connect = mongoose.connect(url);
+const connect = mongoose.connect(config.mongoUrl);
 
 connect.then(
   () => console.log("Connected correctly to server"),
@@ -30,7 +27,6 @@ app.set("view engine", "pug");
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(passport.initialize());

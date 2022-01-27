@@ -1,6 +1,7 @@
 const express = require("express");
 const Shopping = require("../models/shopping");
 const shoppingRouter = express.Router();
+const authenticate = require("../authenticate.js");
 
 shoppingRouter
   .route("/")
@@ -13,7 +14,7 @@ shoppingRouter
       })
       .catch((err) => next(err));
   })
-  .post((req, res, next) => {
+  .post(authenticate.verifyUser, (req, res, next) => {
     Shopping.create(req.body)
       .then((shoppingList) => {
         res.statusCode = 201;
@@ -46,7 +47,7 @@ shoppingRouter
     res.statusCode = 403;
     res.end(`Post operation not supported on /recipe/${req.params.recipeId}`);
   })
-  .put((req, res, next) => {
+  .put(authenticate.verifyUser, (req, res, next) => {
     Shopping.findByIdAndUpdate(
       req.params.recipeId,
       {
@@ -61,7 +62,7 @@ shoppingRouter
       })
       .catch((err) => next(err));
   })
-  .delete((req, res, next) => {
+  .delete(authenticate.verifyUser, (req, res, next) => {
     Shopping.findByIdAndDelete(req.params.recipeId)
       .then((result) => {
         res.statusCode = 200;

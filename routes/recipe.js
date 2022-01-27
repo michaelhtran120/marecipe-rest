@@ -1,5 +1,7 @@
 const express = require("express");
 const Recipe = require("../models/recipe");
+const authenticate = require("../authenticate");
+
 const recipeRouter = express.Router();
 
 recipeRouter
@@ -13,7 +15,7 @@ recipeRouter
       })
       .catch((err) => next(err));
   })
-  .post((req, res, next) => {
+  .post(authenticate.verifyUser, (req, res, next) => {
     Recipe.create(req.body)
       .then((recipe) => {
         res.statusCode = 201;
@@ -46,7 +48,7 @@ recipeRouter
     res.statusCode = 403;
     res.end(`Post operation not supported on /recipe/${req.params.recipeId}`);
   })
-  .put((req, res, next) => {
+  .put(authenticate.verifyUser, (req, res, next) => {
     Recipe.findByIdAndUpdate(
       req.params.recipeId,
       {
@@ -61,7 +63,7 @@ recipeRouter
       })
       .catch((err) => next(err));
   })
-  .delete((req, res, next) => {
+  .delete(authenticate.verifyUser, (req, res, next) => {
     Recipe.findByIdAndDelete(req.params.recipeId)
       .then((result) => {
         res.statusCode = 200;
