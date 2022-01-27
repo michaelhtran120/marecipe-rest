@@ -1,0 +1,30 @@
+{
+  "author": "admin",
+  "image": "https://images.unsplash.com/photo-1596560548464-f010549b84d7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+  "name": "Fried Rice Test",
+  "description": "Uncle Roger's Favorite Test",
+  "ingredients": [
+      {
+          "name": "Short grain white rice",
+          "quantity": "100",
+          "carbs": "65",
+          "proteins": "10",
+          "fats": "2"
+      },
+      {
+          "name": "whole eggs",
+          "quantity": "80",
+          "carbs": "0",
+          "proteins": "12",
+          "fats": "10"
+      },
+      {
+          "name": "Green Onions or Scallions",
+          "quantity": "50",
+          "carbs": "10",
+          "proteins": "1",
+          "fats": "0"
+      }
+  ],
+  "instructions": ["Step 1", "Step 2", "Step 3"]
+}

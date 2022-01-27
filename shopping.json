@@ -1,0 +1,21 @@
+{
+  "author": "admin",
+  "name": "fried rice groceries",
+  "ingredients": [
+    {
+      "name": "short grain white rice",
+      "quantity": 100,
+      "measurement": "grams"
+    },
+    {
+      "name": "eggs",
+      "quantity": 4,
+      "measurement": "count" 
+    },
+    {
+      "name": "green onions",
+      "quantity": 2,
+      "measurement": "count" 
+    }
+  ]
+}
