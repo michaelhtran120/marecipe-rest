@@ -19,14 +19,13 @@ const ingredientSchema = new Schema({
 });
 
 const shoppingSchema = new Schema({
-  author: {
+  author_id: {
     type: String,
     required: true,
   },
   name: {
     type: String,
     required: true,
-    unique: true,
   },
   ingredients: [ingredientSchema],
 });
