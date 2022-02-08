@@ -43,19 +43,20 @@ app.all("*", (req, res, next) => {
   }
 });
 
-const whitelist = ["https://127.0.0.1", "https://127.0.0.1:3000"];
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin || whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  optionSuccessStatus: 200,
+const whitelist = ["https://127.0.0.1", "https://127.0.0.1:3000"]
+
+const corsOptionsDelegate = (req, callback) => {
+  let corsOptions;
+  console.log("header", req.header("Origin"));
+  if (whitelist.indexOf(req.header("Origin")) !== -1) {
+    corsOptions = { origin: true, optionsSuccessStatus: 200 };
+  } else {
+    corsOptions = { origin: false };
+  }
+  callback(null, corsOptions);
 };
 
-app.use(cors(corsOptions));
+app.use(cors(corsOptionsDelegate));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
