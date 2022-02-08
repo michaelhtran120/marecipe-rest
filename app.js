@@ -1,19 +1,22 @@
-var createError = require("http-errors");
-var express = require("express");
-var path = require("path");
-var logger = require("morgan");
+require("dotenv").config();
+
+const createError = require("http-errors");
+const express = require("express");
+const path = require("path");
+const logger = require("morgan");
 const mongoose = require("mongoose");
 const passport = require("passport");
 const config = require("./config");
+const cors = require("cors");
 
-var indexRouter = require("./routes/index");
+const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const recipeRouter = require("./routes/recipe");
 const shoppingRouter = require("./routes/shopping");
 
-var app = express();
+const app = express();
 
-const connect = mongoose.connect(config.mongoUrl);
+const connect = mongoose.connect(`${process.env.MONGO_URL}`);
 
 connect.then(
   () => console.log("Connected correctly to server"),
@@ -30,6 +33,20 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(passport.initialize());
+
+const whitelist = ["http://127.0.0.1", "http://127.0.0.1:3000"];
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  optionSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
