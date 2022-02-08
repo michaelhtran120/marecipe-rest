@@ -57,4 +57,26 @@ router.post("/login", passport.authenticate("local"), (req, res) => {
   });
 });
 
+router.get("/login/google", passport.authenticate("google", { scope: ["email", "profile"] }));
+
+router.get(
+  "/oauth2/redirect/accounts.google.com",
+  passport.authenticate("google", { failureRedirect: "/login", failureMessage: true }),
+  function (req, res) {
+    console.log(req.user);
+    const token = authenticate.getToken({ _id: req.user._id });
+    res.statusCode = 200;
+    res.setHeader("Content-Type", "application/json");
+    res.json({
+      success: true,
+      token: token,
+      user: {
+        id: req.user.id,
+        firstName: req.user.firstName,
+        lastName: req.user.lastName,
+      },
+      status: "You successfully logged in via Google",
+    });
+  },
+);
 module.exports = router;

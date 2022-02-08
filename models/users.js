@@ -26,6 +26,7 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    googleId: String,
   },
   {
     timestamps: true,

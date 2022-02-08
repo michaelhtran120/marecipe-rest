@@ -5,6 +5,9 @@ const JwtStrategy = require("passport-jwt").Strategy;
 // Obj to provide helper methods - will use one to extract token from req obj.
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 const jwt = require("jsonwebtoken");
+
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+
 const config = require("./config.js");
 
 exports.local = passport.use(User.createStrategy());
@@ -42,3 +45,37 @@ exports.jwtPassport = passport.use(
 
 // session false to indicate we are not using sessions
 exports.verifyUser = passport.authenticate("jwt", { session: false });
+
+exports.googlePassport = passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: "http://localhost:3000/users/oauth2/redirect/accounts.google.com",
+    },
+    function (accessToken, refreshToken, profile, done) {
+      console.log(profile);
+      User.findOne({ googleId: profile.id }, (err, user) => {
+        if (err) {
+          return done(err, false);
+        }
+        if (!err && user) {
+          return done(null, user);
+        } else {
+          user = new User({ email: profile.emails[0].value });
+          user.firstName = profile.name.givenName;
+          user.lastName = profile.name.familyName;
+          user.googleId = profile.id;
+          console.log("creating account");
+          user.save((err, user) => {
+            if (err) {
+              return done(err, false);
+            } else {
+              return done(null, user);
+            }
+          });
+        }
+      });
+    },
+  ),
+);
