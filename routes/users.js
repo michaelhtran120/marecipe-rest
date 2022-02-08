@@ -63,7 +63,6 @@ router.get(
   "/oauth2/redirect/accounts.google.com",
   passport.authenticate("google", { failureRedirect: "/login", failureMessage: true }),
   function (req, res) {
-    console.log(req.user);
     const token = authenticate.getToken({ _id: req.user._id });
     res.statusCode = 200;
     res.setHeader("Content-Type", "application/json");

@@ -34,7 +34,16 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(passport.initialize());
 
-const whitelist = ["http://127.0.0.1", "http://127.0.0.1:3000"];
+app.all("*", (req, res, next) => {
+  if (req.secure) {
+    return next();
+  } else {
+    res.statusCode = 403;
+    res.end("Connection not secure");
+  }
+});
+
+const whitelist = ["https://127.0.0.1", "https://127.0.0.1:3000"];
 const corsOptions = {
   origin: (origin, callback) => {
     if (!origin || whitelist.indexOf(origin) !== -1) {

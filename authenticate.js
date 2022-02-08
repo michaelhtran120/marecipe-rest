@@ -51,7 +51,7 @@ exports.googlePassport = passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:3000/users/oauth2/redirect/accounts.google.com",
+      callbackURL: "https://localhost:3000/users/oauth2/redirect/accounts.google.com",
     },
     function (accessToken, refreshToken, profile, done) {
       console.log(profile);
